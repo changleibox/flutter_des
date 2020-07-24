@@ -17,7 +17,7 @@ public class SwiftFlutterDesPlugin: NSObject, FlutterPlugin {
             return
         }
         let key = arguments[1] as? String ?? ""
-        let iv = arguments[2] as? String ?? ""
+        let iv = arguments[2] as? UInt8
         switch call.method {
         case "encrypt":
             encrypt(string: arguments[0] as? String ?? "", key: key, iv: iv, result: result)
@@ -37,27 +37,27 @@ public class SwiftFlutterDesPlugin: NSObject, FlutterPlugin {
         }
     }
     
-    func encryptToHex(string: String, key: String, iv: String, result: FlutterResult) {
+    func encryptToHex(string: String, key: String, iv: UInt8, result: FlutterResult) {
         result(encrypt(string: string, key: key, iv: iv)?.toHexString)
     }
     
-    func encrypt(string: String, key: String, iv: String, result: FlutterResult) {
+    func encrypt(string: String, key: String, iv: UInt8, result: FlutterResult) {
         result(encrypt(string: string, key: key, iv: iv))
     }
     
-    func encrypt(string: String, key: String, iv: String) -> Data? {
+    func encrypt(string: String, key: String, iv: UInt8) -> Data? {
         return string.data(using: .utf8)?.crypt(operation: CCOperation(kCCEncrypt), key: key, iv: iv)
     }
     
-    func decryptFromHex(string: String, key: String, iv: String, result: FlutterResult) {
+    func decryptFromHex(string: String, key: String, iv: UInt8, result: FlutterResult) {
         result(decrypt(data: string.hexToData, key: key, iv: iv))
     }
     
-    func decrypt(data: Data, key: String, iv: String, result: FlutterResult) {
+    func decrypt(data: Data, key: String, iv: UInt8, result: FlutterResult) {
        result(decrypt(data: data, key: key, iv: iv))
     }
     
-    func decrypt(data: Data, key: String, iv: String) -> String? {
+    func decrypt(data: Data, key: String, iv: UInt8) -> String? {
         guard let data = data.crypt(operation: CCOperation(kCCDecrypt), key: key, iv: iv) else {
             return nil
         }
@@ -68,11 +68,11 @@ public class SwiftFlutterDesPlugin: NSObject, FlutterPlugin {
 
 private extension Data {
     
-    func crypt(operation: CCOperation, key: String, iv: String) -> Data? {
+    func crypt(operation: CCOperation, key: String, iv: UInt8) -> Data? {
         let algorithm = kCCAlgorithmDES
         let options = kCCOptionPKCS7Padding
         let keyData = [UInt8](key.data(using: .utf8) ?? Data())
-        let ivData = [UInt8](iv.data(using: .utf8) ?? Data())
+        let ivData = iv
         let keyLength = kCCKeySizeDES
         let dataIn = [UInt8](self)
         let dataInLength = self.count

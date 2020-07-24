@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:typed_data';
@@ -16,7 +18,7 @@ const _string =
 
 class _MyAppState extends State<MyApp> {
   static const _key = "u1BvOHzUOcklgNpn1MaWvdn9DT4LyzSX";
-  static const _iv = "12345678";
+  static final _iv = utf8.encode("12345678");
   TextEditingController _controller = TextEditingController();
   Uint8List _encrypt;
   String _decrypt = '';
@@ -92,7 +94,7 @@ class _MyAppState extends State<MyApp> {
                     backgroundColor: Colors.red,
                     child: Text('iv'),
                   ),
-                  label: Text(_iv),
+                  label: Text(utf8.decode(_iv)),
                 ),
                 Divider(),
                 _build('Data', _encrypt == null ? '' : _encrypt.toString(), _decrypt == null ? '' : _decrypt),

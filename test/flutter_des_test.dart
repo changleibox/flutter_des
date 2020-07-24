@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_des/flutter_des.dart';
@@ -8,7 +10,7 @@ void main() {
   final _string =
       "Java, android, ios, get the same result by DES encryption and decryption.";
   final _key = "u1BvOHzUOcklgNpn1MaWvdn9DT4LyzSX";
-  final _iv = "12345678";
+  final _iv = utf8.encode("12345678");
 
   setUp(() {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {

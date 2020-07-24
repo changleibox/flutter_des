@@ -87,7 +87,7 @@ public class FlutterDesPlugin implements MethodCallHandler {
       //key的长度不能够小于8位字节
       Key secretKey = keyFactory.generateSecret(dks);
       Cipher cipher = Cipher.getInstance(ALGORITHM_DES);
-      AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv.getBytes());
+      AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv);
       cipher.init(Cipher.ENCRYPT_MODE, secretKey,paramSpec);
       return cipher.doFinal(data.getBytes());
     }catch(Exception e){
@@ -113,7 +113,7 @@ public class FlutterDesPlugin implements MethodCallHandler {
       //key的长度不能够小于8位字节
       Key secretKey = keyFactory.generateSecret(dks);
       Cipher cipher = Cipher.getInstance(ALGORITHM_DES);
-      AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv.getBytes());
+      AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv);
       cipher.init(Cipher.DECRYPT_MODE, secretKey, paramSpec);
       return new String(cipher.doFinal(data));
     } catch (Exception e){
