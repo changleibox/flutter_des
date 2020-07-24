@@ -12,7 +12,7 @@ class FlutterDes {
     if (string.isEmpty) {
       return null;
     }
-    final Uint8List crypt = await _channel.invokeMethod('encrypt', [string, key, iv ?? _iv]);
+    final Uint8List crypt = await _channel.invokeMethod('encrypt', [string, key, Uint8List.fromList(iv ?? _iv)]);
     return crypt;
   }
 
@@ -20,7 +20,7 @@ class FlutterDes {
     if (string.isEmpty) {
       return '';
     }
-    final String crypt = await _channel.invokeMethod('encryptToHex', [string, key, iv ?? _iv]);
+    final String crypt = await _channel.invokeMethod('encryptToHex', [string, key, Uint8List.fromList(iv ?? _iv)]);
     return crypt;
   }
 
@@ -33,12 +33,12 @@ class FlutterDes {
   }
 
   static Future<String> decrypt(Uint8List data, String key, {List<int> iv}) async {
-    final String crypt = await _channel.invokeMethod('decrypt', [data, key, iv ?? _iv]);
+    final String crypt = await _channel.invokeMethod('decrypt', [data, key, Uint8List.fromList(iv ?? _iv)]);
     return crypt;
   }
 
   static Future<String> decryptFromHex(String hex, String key, {List<int> iv}) async {
-    final String crypt = await _channel.invokeMethod('decryptFromHex', [hex, key, iv ?? _iv]);
+    final String crypt = await _channel.invokeMethod('decryptFromHex', [hex, key, Uint8List.fromList(iv ?? _iv)]);
     return crypt;
   }
 
